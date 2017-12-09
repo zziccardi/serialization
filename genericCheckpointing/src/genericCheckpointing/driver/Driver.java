@@ -1,7 +1,13 @@
 
 package genericCheckpointing.driver;
 
+import genericCheckpointing.server.RestoreI;
+import genericCheckpointing.server.StoreI;
+import genericCheckpointing.util.MyAllTypesFirst;
+import genericCheckpointing.util.MyAllTypesSecond;
 import genericCheckpointing.util.ProxyCreator;
+import genericCheckpointing.util.SerializableObject;
+import genericCheckpointing.xmlStoreRestore.StoreRestoreHandler;
 
 public class Driver {
     
@@ -15,7 +21,7 @@ public class Driver {
 	    // the InvocationHandler
 	
 	    // create a proxy
-	    StoreRestoreI cpointRef = (StoreRestoreI) pc.createProxy(
+	    StoreRestoreI proxy = (StoreRestoreI) pc.createProxy(
             new Class[] {
                 StoreI.class,
                 RestoreI.class
@@ -43,8 +49,8 @@ public class Driver {
 	        //mySecond = new MyAllTypesSecond(...);
 
 	        // FIXME: store myFirst and mySecond in the data structure
-	        ((StoreI) cpointRef).writeObj(myFirst, "XML");
-	        ((StoreI) cpointRef).writeObj(mySecond, "XML");
+	        ((StoreI) proxy).writeObj(myFirst, "XML");
+	        ((StoreI) proxy).writeObj(mySecond, "XML");
 	    }
 
 	    SerializableObject myRecordRet;
@@ -52,7 +58,7 @@ public class Driver {
 	    // create a data structure to store the returned ojects
 	    for (int j = 0; j < 2 * NUM_OF_OBJECTS; j++) {
 
-	        myRecordRet = ((RestoreI) cpointRef).readObj("XML");
+	        myRecordRet = ((RestoreI) proxy).readObj("XML");
 	        
 	        // FIXME: store myRecordRet in the vector
 	    }

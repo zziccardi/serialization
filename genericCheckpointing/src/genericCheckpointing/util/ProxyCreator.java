@@ -1,21 +1,16 @@
 
 package genericCheckpointing.util;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
-
 import genericCheckpointing.server.StoreRestoreI;
 
 public class ProxyCreator {
     
-	public StoreRestoreI createProxy(Class<?>[] interfaceArray, InvocationHandler handler) {
-		StoreRestoreI storeRestoreRef = (StoreRestoreI) Proxy.newProxyInstance(
+	public StoreRestoreI createProxy(Class<?>[] interfaces, InvocationHandler handler) {
+		return (StoreRestoreI) Proxy.newProxyInstance(
             getClass().getClassLoader(),
-            interfaceArray,
+            interfaces,
             handler
         );
-
-		return storeRestoreRef;
 	}
 	
 }
