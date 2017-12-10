@@ -31,7 +31,7 @@ public class Driver {
 	    int numObjects = -1;
 	    
 	    try {
-            numObjects = Integer.parseInt(args[2]);
+            numObjects = Integer.parseInt(args[1]);
         }
         catch (NumberFormatException e) {
             System.err.println("Could not parse number of objects as integer");
@@ -52,7 +52,7 @@ public class Driver {
                 StoreI.class,
                 RestoreI.class
             }, 
-            new StoreRestoreHandler()
+            new StoreRestoreHandler(fileName)
         );
         
         // Create two vectors of SerializableObject, to be populated
@@ -60,9 +60,7 @@ public class Driver {
         Vector<SerializableObject> serialized  = new Vector<>();
         Vector<SerializableObject> deserialzed = new Vector<>();
 		
-		// FIXME: invoke a method on the handler instance to set the file name and open the file
-	    
-	    // Create a bunch of objects, serialize them, then deserialze
+		// Create a bunch of objects, serialize them, then deserialze
 	    // them and ensure the values are identical
 	    if (mode.equals("serdeser")) {
 	        MyAllTypesFirst  myFirst  = null;
@@ -93,9 +91,8 @@ public class Driver {
 	            // FIXME: store obj in the vector
 	        }
 
-	        // FIXME: invoke a method on the handler to close the file (if it hasn't already been closed)
 
-	        // FIXME: compare and confirm that the serialized and deserialzed objects are equal. 
+	        // FIXME: compare and confirm that the serialized and deserialized objects are equal. 
 	        // The comparison should use the equals and hashCode methods. Note that hashCode 
 	        // is used for key-value based data structures
 	        

@@ -9,7 +9,7 @@ ant -buildfile src/build.xml all
 ------------------------------------------------------------------------
 
 To run:
-ant -buildfile src/build.xml run -Darg0=mode -Darg1=numObjects -Darg2=fileName
+ant -buildfile src/build.xml run -Darg0=serdeser -Darg1=10 -Darg2=file.txt
 
 ------------------------------------------------------------------------
 
