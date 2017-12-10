@@ -1,8 +1,11 @@
 
 package genericCheckpointing.driver;
 
+import java.util.Vector;
+
 import genericCheckpointing.server.RestoreI;
 import genericCheckpointing.server.StoreI;
+import genericCheckpointing.server.StoreRestoreI;
 import genericCheckpointing.util.MyAllTypesFirst;
 import genericCheckpointing.util.MyAllTypesSecond;
 import genericCheckpointing.util.ProxyCreator;
@@ -12,15 +15,38 @@ import genericCheckpointing.xmlStoreRestore.StoreRestoreHandler;
 public class Driver {
     
     public static void main(String[] args) {
+	    if (args.length != 3) {
+	        System.err.println("Usage: <mode> <number of objects> <file name>");
+	        System.exit(-1);
+	    }
 	    
-	    // FIXME: read the value of checkpointFile from the command line
+	    String mode = args[0];
+	    
+	    if (!(mode.equals("serdeser") || mode.equals("deser"))) {
+	        System.err.println("Invalid mode (must be \"serdeser\" or \"deser\")");
+	        System.exit(-1);
+	    }
+	    
+	    // The number of objects of both MyAllTypesFirst and MyAllTypesSecond
+	    int numObjects = -1;
+	    
+	    try {
+            numObjects = Integer.parseInt(args[2]);
+        }
+        catch (NumberFormatException e) {
+            System.err.println("Could not parse number of objects as integer");
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        finally {
+            // Do nothing!
+        }
+	    
+	    String fileName = args[2];
 	
 	    ProxyCreator pc = new ProxyCreator();
-	
-	    // create an instance of StoreRestoreHandler (which implements
-	    // the InvocationHandler
-	
-	    // create a proxy
+	    
+	    // Create a proxy
 	    StoreRestoreI proxy = (StoreRestoreI) pc.createProxy(
             new Class[] {
                 StoreI.class,
@@ -28,46 +54,61 @@ public class Driver {
             }, 
             new StoreRestoreHandler()
         );
+        
+        // Create two vectors of SerializableObject, to be populated
+        // with instances of MyAllTypesFirst and MyAllTypesSecond
+        Vector<SerializableObject> serialized  = new Vector<>();
+        Vector<SerializableObject> deserialzed = new Vector<>();
 		
-	    // FIXME: invoke a method on the handler instance to set the file name for checkpointFile and open the file
+		// FIXME: invoke a method on the handler instance to set the file name and open the file
+	    
+	    // Create a bunch of objects, serialize them, then deserialze
+	    // them and ensure the values are identical
+	    if (mode.equals("serdeser")) {
+	        MyAllTypesFirst  myFirst  = null;
+	        MyAllTypesSecond mySecond = null;
 
-	    MyAllTypesFirst  myFirst;
-	    MyAllTypesSecond mySecond;
+            // Create and serialize a bunch of objects
+	        for (int i = 0; i < numObjects; i++) {
 
-	    // Use an if/switch to proceed according to the command line argument
-	    // For deser, just deserliaze the input file into the data structure and then print the objects
-	    // The code below is for "serdeser" mode
-	    // For "serdeser" mode, both the serialize and deserialize functionality should be called.
+	            // FIXME: create these object instances correctly using an explicit value constructor
+	            // use the index variable of this loop to change the values of the arguments to
+	            // these constructors
+	            
+	            //myFirst = new MyAllTypesFirst(...);
+	            //mySecond = new MyAllTypesSecond(...);
 
-	    // create a data structure to store the objects being serialized
-        // NUM_OF_OBJECTS refers to the count for each of MyAllTypesFirst and MyAllTypesSecond
-	    for (int i = 0; i < NUM_OF_OBJECTS; i++) {
+	            // FIXME: store myFirst and mySecond in the data structure
+	            
+	            ((StoreI) proxy).writeObj(myFirst, "XML");
+	            ((StoreI) proxy).writeObj(mySecond, "XML");
+	        }
 
-	        // FIXME: create these object instances correctly using an explicit value constructor
-	        // use the index variable of this loop to change the values of the arguments to these constructors
-	        //myFirst = new MyAllTypesFirst(...);
-	        //mySecond = new MyAllTypesSecond(...);
+	        SerializableObject obj;
 
-	        // FIXME: store myFirst and mySecond in the data structure
-	        ((StoreI) proxy).writeObj(myFirst, "XML");
-	        ((StoreI) proxy).writeObj(mySecond, "XML");
-	    }
+            // Deserialize the objects
+	        for (int i = 0; i < 2 * numObjects; i++) {
+	            obj = ((RestoreI) proxy).readObj("XML");
+	            
+	            // FIXME: store obj in the vector
+	        }
 
-	    SerializableObject myRecordRet;
+	        // FIXME: invoke a method on the handler to close the file (if it hasn't already been closed)
 
-	    // create a data structure to store the returned ojects
-	    for (int j = 0; j < 2 * NUM_OF_OBJECTS; j++) {
-
-	        myRecordRet = ((RestoreI) proxy).readObj("XML");
+	        // FIXME: compare and confirm that the serialized and deserialzed objects are equal. 
+	        // The comparison should use the equals and hashCode methods. Note that hashCode 
+	        // is used for key-value based data structures
 	        
-	        // FIXME: store myRecordRet in the vector
+	        
 	    }
-
-	    // FIXME: invoke a method on the handler to close the file (if it hasn't already been closed)
-
-	    // FIXME: compare and confirm that the serialized and deserialzed objects are equal. 
-	    // The comparison should use the equals and hashCode methods. Note that hashCode 
-	    // is used for key-value based data structures
+	    // Deserialize the input file
+	    else if (mode.equals("deser")) {
+	        
+	        
+	        // TODO
+	        
+	        
+	    }
     }
     
 }
