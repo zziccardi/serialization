@@ -10,6 +10,15 @@ public class MyAllTypesSecond extends SerializableObject {
     private short  myOtherShortT;
     private char   myCharT;
     
+    public MyAllTypesSecond(double myDoubleT, double myOtherDoubleT, float myFloatT, short myShortT, short myOtherShortT, char myCharT) {
+        this.myDoubleT      = myDoubleT;
+        this.myOtherDoubleT = myOtherDoubleT;
+        this.myFloatT       = myFloatT;
+        this.myShortT       = myShortT;
+        this.myOtherShortT  = myOtherShortT;
+        this.myCharT        = myCharT;
+    }
+    
     public void setMyDoubleT(double d) {
         myDoubleT = d;
     }
