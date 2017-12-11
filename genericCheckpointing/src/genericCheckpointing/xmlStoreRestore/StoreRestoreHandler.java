@@ -35,11 +35,11 @@ public class StoreRestoreHandler implements InvocationHandler {
     }
     
     private void serialize(SerializableObject obj, SerializationStrategyI strategy) {
-        strategy.serialize(obj);
+        strategy.serialize(obj, fileName);
     }
     
-    private void deserialize(DeserializationStrategyI strategy) {
-        strategy.deserialize();
+    private SerializableObject deserialize(DeserializationStrategyI strategy) {
+        return strategy.deserialize(fileName);
     }
     
 }

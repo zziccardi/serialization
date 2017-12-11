@@ -1,9 +1,11 @@
 
 package genericCheckpointing.xmlStoreRestore;
 
+import genericCheckpointing.util.SerializableObject;
+
 public interface DeserializationStrategyI {
     
-    void deserialize();
+    SerializableObject deserialize(String fileName);
     
 }
 
