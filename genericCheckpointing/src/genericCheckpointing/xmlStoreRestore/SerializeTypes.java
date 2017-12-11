@@ -3,36 +3,40 @@ package genericCheckpointing.xmlStoreRestore;
 
 public class SerializeTypes {
     
-    public String serializeInt(String name, int value) {
-        return "    <" + name + " xsi:type=\"xsd:int\">" + String.valueOf(value) + "</" + name + ">";
+    private static String serialize(String name, String value, String type) {
+        return "    <" + name + " xsi:type=\"xsd:" + type + "\">" + value + "</" + name + ">";
     }
     
-    public String serializeLong(String name, long value) {
-        return "    <" + name + " xsi:type=\"xsd:long\">" + String.valueOf(value) + "</" + name + ">";
+    public static String serializeInt(String name, String value) {
+        return serialize(name, value, "int");
     }
     
-    public String serializeString(String name, String value) {
-        return "    <" + name + " xsi:type=\"xsd:string\">" + value + "</" + name + ">";
+    public static String serializeLong(String name, String value) {
+        return serialize(name, value, "long");
     }
     
-    public String serializeBoolean(String name, boolean value) {
-        return "    <" + name + " xsi:type=\"xsd:boolean\">" + String.valueOf(value) + "</" + name + ">";
+    public static String serializeString(String name, String value) {
+        return serialize(name, value, "string");
     }
     
-    public String serializeDouble(String name, double value) {
-        return "    <" + name + " xsi:type=\"xsd:double\">" + String.valueOf(value) + "</" + name + ">";
+    public static String serializeBoolean(String name, String value) {
+        return serialize(name, value, "boolean");
     }
     
-    public String serializeFloat(String name, float value) {
-        return "    <" + name + " xsi:type=\"xsd:float\">" + String.valueOf(value) + "</" + name + ">";
+    public static String serializeDouble(String name, String value) {
+        return serialize(name, value, "double");
     }
     
-    public String serializeShort(String name, short value) {
-        return "    <" + name + " xsi:type=\"xsd:short\">" + String.valueOf(value) + "</" + name + ">";
+    public static String serializeFloat(String name, String value) {
+        return serialize(name, value, "float");
     }
     
-    public String serializeChar(String name, char value) {
-        return "    <" + name + " xsi:type=\"xsd:char\">" + String.valueOf(value) + "</" + name + ">";
+    public static String serializeShort(String name, String value) {
+        return serialize(name, value, "short");
+    }
+    
+    public static String serializeChar(String name, String value) {
+        return serialize(name, value, "char");
     }
     
 }
