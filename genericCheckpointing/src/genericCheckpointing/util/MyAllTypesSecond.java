@@ -10,6 +10,9 @@ public class MyAllTypesSecond extends SerializableObject {
     private short  myOtherShortT;
     private char   myCharT;
     
+    // Used in XMLDeserializationStrategy
+    public MyAllTypesSecond() {}
+    
     public MyAllTypesSecond(double myDoubleT, double myOtherDoubleT, float myFloatT, short myShortT, short myOtherShortT, char myCharT) {
         this.myDoubleT      = myDoubleT;
         this.myOtherDoubleT = myOtherDoubleT;

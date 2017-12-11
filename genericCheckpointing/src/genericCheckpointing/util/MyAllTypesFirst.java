@@ -10,6 +10,9 @@ public class MyAllTypesFirst extends SerializableObject {
     private String  myString;
     private boolean myBool;
     
+    // Used in XMLDeserializationStrategy
+    public MyAllTypesFirst() {}
+    
     public MyAllTypesFirst(int myInt, int myOtherInt, long myLong, long myOtherLong, String myString, boolean myBool) {
         this.myInt       = myInt;
         this.myOtherInt  = myOtherInt;
