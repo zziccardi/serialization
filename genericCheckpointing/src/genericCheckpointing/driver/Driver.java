@@ -113,13 +113,10 @@ public class Driver {
             
             handler.closeFile();
 
-
-            // TODO: compare and confirm that the serialized and deserialized objects are equal. 
-            // The comparison should use the equals and hashCode methods. Note that hashCode 
-            // is used for key-value based data structures
-            
             int mismatchedObjects = 0;
             
+            // Compare the serialized and deserialized objects to
+            // confirm they are equal
             for (int i = 0; i < 2 * numObjects; i++) {
                 //System.out.println(serialized.get(i).toString());
                 //System.out.println(deserialized.get(i).toString());
