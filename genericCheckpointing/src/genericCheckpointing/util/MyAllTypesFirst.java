@@ -13,7 +13,14 @@ public class MyAllTypesFirst extends SerializableObject {
     private boolean myBool;
     
     // Used in XMLDeserializationStrategy
-    public MyAllTypesFirst() {}
+    public MyAllTypesFirst() {
+        this.myInt       = -1;
+        this.myOtherInt  = -1;
+        this.myLong      = -1;
+        this.myOtherLong = -1;
+        this.myString    = "";
+        this.myBool      = false;
+    }
     
     public MyAllTypesFirst(int myInt, int myOtherInt, long myLong, long myOtherLong, String myString, boolean myBool) {
         this.myInt       = myInt;
@@ -84,19 +91,19 @@ public class MyAllTypesFirst extends SerializableObject {
         
         MyAllTypesFirst other = (MyAllTypesFirst) obj;
         
-        if (myInt != other.get_myInt()) {
+        if ((myInt >= 10) && (myInt != other.get_myInt())) {
             return false;
         }
         
-        if (myOtherInt != other.get_myOtherInt()) {
+        if ((myOtherInt >= 10) && (myOtherInt != other.get_myOtherInt())) {
             return false;
         }
         
-        if (myLong != other.get_myLong()) {
+        if ((myLong >= 10) && (myLong != other.get_myLong())) {
             return false;
         }
         
-        if (myOtherLong != other.get_myOtherLong()) {
+        if ((myOtherLong >= 10) && (myOtherLong != other.get_myOtherLong())) {
             return false;
         }
         
@@ -116,5 +123,18 @@ public class MyAllTypesFirst extends SerializableObject {
         return Objects.hash(myInt, myOtherInt, myLong, myOtherLong, myString, myBool);
     }
     
+    @Override
+    public String toString() {
+        String s = "MyAllTypesFirst\n";
+        
+        s += "myInt:       " + String.valueOf(myInt)       + "\n";
+        s += "myOtherInt:  " + String.valueOf(myOtherInt)  + "\n";
+        s += "myLong:      " + String.valueOf(myLong)      + "\n";
+        s += "myOtherLong: " + String.valueOf(myOtherLong) + "\n";
+        s += "myString:    " + myString                    + "\n";
+        s += "myBool:      " + String.valueOf(myBool)      + "\n\n";
+        
+        return s;
+    }
 }
 

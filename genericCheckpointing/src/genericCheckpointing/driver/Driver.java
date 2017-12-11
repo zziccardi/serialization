@@ -44,6 +44,8 @@ public class Driver {
         }
 	    
 	    String fileName = args[2];
+	    
+	    StoreRestoreHandler handler = new StoreRestoreHandler(fileName);
 	
 	    ProxyCreator pc = new ProxyCreator();
 	    
@@ -53,7 +55,7 @@ public class Driver {
                 StoreI.class,
                 RestoreI.class
             }, 
-            new StoreRestoreHandler(fileName)
+            handler
         );
         
         // Create two vectors of SerializableObject, to be populated
@@ -96,31 +98,50 @@ public class Driver {
                 serialized.add(myFirst);
                 serialized.add(mySecond);
             }
+            
+            handler.openFile();
 
             // Deserialize the objects
             for (int i = 0; i < 2 * numObjects; i++) {
                 // Read the objects from the file via the proxy
                 SerializableObject obj = ((RestoreI) proxy).readObj("XML");
-
+                
                 // Add the deserialized object to the vector for
                 // comparison with the objects that were serialized
                 deserialized.add(obj);
             }
+            
+            handler.closeFile();
 
 
             // TODO: compare and confirm that the serialized and deserialized objects are equal. 
             // The comparison should use the equals and hashCode methods. Note that hashCode 
             // is used for key-value based data structures
-
-
+            
+            int mismatchedObjects = 0;
+            
+            for (int i = 0; i < 2 * numObjects; i++) {
+                //System.out.println(serialized.get(i).toString());
+                //System.out.println(deserialized.get(i).toString());
+                
+                if (!serialized.get(i).equals(deserialized.get(i))) {
+                    mismatchedObjects++;
+                }
+            }
+            
+            System.out.println(String.valueOf(mismatchedObjects) + " mismatched objects");
         }
         // Deserialize the input file
         else if (mode.equals("deser")) {
+            handler.openFile();
             
+            for (int i = 0; i < numObjects; i++) {
+                SerializableObject obj = ((RestoreI) proxy).readObj("XML");
+                
+                System.out.println(obj.toString());
+            }
             
-            // TODO
-            
-            
+            handler.closeFile();
         }
     }
     

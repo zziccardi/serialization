@@ -1,61 +1,57 @@
 
 package genericCheckpointing.util;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
 
 public class FileProcessor {
     
-    private List<String> lines;
-    private ListIterator<String> iter;
+    private String         fileName;
+    private FileReader     fileReader;
+    private BufferedReader bufferedReader;
     
     public FileProcessor(String fileName) {
+        this.fileName = fileName;
+    }
+    
+    public void openFile() {
         try {
-            Path path = Paths.get(fileName);
-            
-            // Automatically closes the file even if an exception occurs
-            // WARNING: Reads all lines from a file into memory, so
-            // don't use for large files!
-            lines = Files.readAllLines(path);
+            fileReader     = new FileReader(fileName);
+            bufferedReader = new BufferedReader(fileReader);
         }
-        catch (InvalidPathException | IOException | SecurityException e) {
+        catch (FileNotFoundException e) {
+            System.err.println("Could not open file " + fileName);
             e.printStackTrace();
             System.exit(-1);
         }
-        finally {
-            // Do nothing!
-        }
-        
-        iter = lines.listIterator();
-        
-        //MyLogger.writeMessage("FileProcessor constructor invoked", MyLogger.DebugLevel.CONSTRUCTOR);
     }
     
-    /**
-     * Return one line from the list
-     * @return line - null if all lines were already returned
-     */
     public String readLine() {
-        if (iter.hasNext()) {
-            return iter.next();
+        String line = null;
+        
+        try {
+            line = bufferedReader.readLine();
+        }
+        catch (IOException e) {
+            System.err.println("Could not read from file " + fileName);
+            e.printStackTrace();
+            System.exit(-1);
         }
         
-        return null;
+        return line;
     }
     
-    /**
-     * Return a string representation of the values in the list
-     * @return string
-     */
-    @Override
-    public String toString() {
-        return Arrays.toString(lines.toArray());
+    public void closeFile() {
+        try {
+            bufferedReader.close();
+        }
+        catch (IOException e) {
+            System.err.println("Could not close file " + fileName);
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
     
 }

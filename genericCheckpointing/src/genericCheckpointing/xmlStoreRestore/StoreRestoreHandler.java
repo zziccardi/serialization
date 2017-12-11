@@ -14,6 +14,8 @@ public class StoreRestoreHandler implements InvocationHandler {
     
     public StoreRestoreHandler(String fileName) {
         this.fileName = fileName;
+        
+        processor = new FileProcessor(fileName);
     }
     
     @Override
@@ -29,7 +31,7 @@ public class StoreRestoreHandler implements InvocationHandler {
         }
         else if (methodName.equals("readObj")) {
             if (((String) args[0]).equals("XML")) {
-                deserialize(new XMLDeserializationStrategy());
+                return deserialize(new XMLDeserializationStrategy());
             }
         }
         
@@ -41,9 +43,15 @@ public class StoreRestoreHandler implements InvocationHandler {
     }
     
     private SerializableObject deserialize(DeserializationStrategyI strategy) {
-        processor = new FileProcessor(fileName);
-        
         return strategy.deserialize(processor);
+    }
+    
+    public void openFile() {
+        processor.openFile();
+    }
+    
+    public void closeFile() {
+        processor.closeFile();
     }
     
 }
