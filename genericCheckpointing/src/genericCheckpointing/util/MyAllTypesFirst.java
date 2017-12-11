@@ -1,6 +1,8 @@
 
 package genericCheckpointing.util;
 
+import java.util.Objects;
+
 public class MyAllTypesFirst extends SerializableObject {
     
     private int     myInt;
@@ -68,6 +70,50 @@ public class MyAllTypesFirst extends SerializableObject {
     
     public boolean get_myBool() {
         return myBool;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        
+        if (!(obj instanceof MyAllTypesFirst)) {
+            return false;
+        }
+        
+        MyAllTypesFirst other = (MyAllTypesFirst) obj;
+        
+        if (myInt != other.get_myInt()) {
+            return false;
+        }
+        
+        if (myOtherInt != other.get_myOtherInt()) {
+            return false;
+        }
+        
+        if (myLong != other.get_myLong()) {
+            return false;
+        }
+        
+        if (myOtherLong != other.get_myOtherLong()) {
+            return false;
+        }
+        
+        if (!myString.equals(other.get_myString())) {
+            return false;
+        }
+        
+        if (myBool != other.get_myBool()) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(myInt, myOtherInt, myLong, myOtherLong, myString, myBool);
     }
     
 }

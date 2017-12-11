@@ -1,6 +1,8 @@
 
 package genericCheckpointing.util;
 
+import java.util.Objects;
+
 public class MyAllTypesSecond extends SerializableObject {
     
     private double myDoubleT;
@@ -68,6 +70,50 @@ public class MyAllTypesSecond extends SerializableObject {
     
     public char get_myCharT() {
         return myCharT;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        
+        if (!(obj instanceof MyAllTypesSecond)) {
+            return false;
+        }
+        
+        MyAllTypesSecond other = (MyAllTypesSecond) obj;
+        
+        if (myDoubleT != other.get_myDoubleT()) {
+            return false;
+        }
+        
+        if (myOtherDoubleT != other.get_myOtherDoubleT()) {
+            return false;
+        }
+        
+        if (myFloatT != other.get_myFloatT()) {
+            return false;
+        }
+        
+        if (myShortT != other.get_myShortT()) {
+            return false;
+        }
+        
+        if (myOtherShortT != other.get_myOtherShortT()) {
+            return false;
+        }
+        
+        if (myCharT != other.get_myCharT()) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(myDoubleT, myOtherDoubleT, myFloatT, myShortT, myOtherShortT, myCharT);
     }
     
 }
