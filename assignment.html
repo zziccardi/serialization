@@ -1,0 +1,369 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title> Design Patterns: Assignment 6</title>
+</head>
+
+<body>
+<h1> Assignment 6 (Final Project) </h1>
+
+
+<h2> Due date </h2>
+<UL> 
+<LI> noon on Dec 11th.
+</UL>
+
+<BR> 
+
+Submit your code as per the provided instructions. 
+
+</UL>
+
+<h3> Updates </h3>
+
+<UL>
+</UL>
+
+<h3> Assignment Goal </h3>
+
+Apply the design principles you have learned so far to develop and
+test code for the given problem. Apply the dynamic proxy and any other
+applicable pattern(s).
+
+<h3> Team Work </h3>
+
+<UL>
+<LI>  You are required to alone on this project. 
+</UL>
+
+You CANNOT collaborate or discuss the design, implementation, or
+debugging ideas with any other student. However, discussion on design
+is encouraged via the listserv.
+
+<h3> Programming Language </h3>
+You are required to program this project in Java.
+
+<h3> Compilation Method </H3> 
+
+<UL>
+<LI> You are required to use </I> ANT </I> for the following:
+  <UL>
+   <LI> Compiling the code 
+   <LI> running the code
+   <LI> Generating a tarball for submission
+</UL>
+
+<LI> Your code should compile and run on <I> bingsuns </I> or the <I>
+debian-pods </I> in the Computer Science lab in the Engineering
+Building.
+
+</UL> 
+
+
+<h3> Policy on sharing of code </h3>
+
+<LI> EVERY line of code that you submit in this assignment should be
+written by you or be part of the code template provided for this
+assignment. Do NOT show your code to any other group. Our
+code-comparison software can very easily detect similarities.
+
+<LI> Post to the listserv if you have any questions about the
+requirements. Do NOT post your code to the listserv asking for help
+with debugging. However, it is okay to post design/concept questions
+on programming in Java.
+
+</UL>
+
+<H2>  Project Description  </H2>
+
+<H3> Checkpointing Objects </H3>
+
+The purpose of this assignment is to create a generic library to
+serialize and deserialize objects. The code should allow the
+conversion of objects into a wire format. The code should be designed
+using dynamic proxies and reflection so that addition of new objects
+or serialization formats causes minimal changes (reduces the ripple
+effect).
+
+<UL> 
+
+<LI> Creating the Dynamic Proxy
+
+<UL>
+<LI> The Driver code should call the <I> createProxy </I>
+method in the ProxyCreator utility class to create a dynamic proxy reference. The
+code inside the createProxy method is shown below. 
+
+
+<PRE>
+ StoreRestoreI  serDeserObj =
+            (StoreRestoreI)
+            Proxy.newProxyInstance(
+                                   getClass().getClassLoader(),
+                                   interfaceArray,
+                                   handler
+                                   );
+
+</PRE>
+
+<LI> Pass an array of interfaces to the createProxy method with the
+following interfaces (StoreI, RestoreI).
+
+<PRE>
+
+public interface StoreI extends StoreRestoreI {
+      void writeObj(MyAllTypesFirst aRecord, int authID, String wireFormat);
+      void writeObj(MyAllTypesSecond bRecord, int authID, String wireFormat);
+}
+
+public interface RestoreI extends StoreRestoreI {
+      SerializableObject readObj(String wireFormat);
+}
+
+
+</PRE>
+
+<LI> SerializablObject is an empty base class
+<LI> MyAllTypesFirst extends SerializableObject
+<LI> MyAllTypesSecond extends SerializableObject
+<LI> StoreRestoreI.java is a tag interface
+<LI> wireFormat is pseudoXML as shown in the sample files.
+<LI> authID is an integer in the range of 1-9999
+
+<LI> Pass an invocation handler to the createProxy() utility method.
+
+</UL>
+
+</UL>
+
+<LI> Design two Java classes MyAllTypesFirst and MyAllTypesSecond with
+data members that have names and types as shown in the serialized
+format shown in the file <a
+href="./MyAllTypes2.txt">MyAllTypes2.txt</a>. These two classes should
+have the appropriate setX and getX methods.
+
+<LI> Here is an example of multiple instances of the the two types in serialized pseudoXML format:
+<UL>
+<LI>  <a href="./MyAllTypes2.txt">MyAllTypes2.txt</a>.
+</UL>
+
+
+<LI> Do NOT use an XML parser. The above format is NOT compliant with
+XML standards and so XML parsers will not work. Use the Java string
+library API to parse the pseudoXML format. For example, you can use
+substring library to find specific values within XML tags.
+
+<LI> Note that the data members for an instance may appear in a diffrent order in the serialized format.
+
+
+<LI> Note that you need to read the value of "xsi:type" to determine
+if a "genericCheckpointing.util.MyAllTypesFirst" or
+"genericCheckpointing.util.MyAllTypesSecond" needs to be created, via
+reflection.
+
+<LI> If you add new method names to the interfaces note that the
+methods names in the proxy interfaces should be unique (don't
+use the same method name in two different interfaces, as it will cause
+problems with dynamic proxy usage).
+
+<LI> The driver code should invoke methods on the dynamic
+proxy, as if it is invoking methods on an object that implements the 2
+interfaces (StoreI and RestoreI). Remember to cast the dynamic proxy to the
+correct interface before invoking the method.
+
+<LI> Each invocation will transfer control to the <I> invoke </I>
+method of the invocation handler.
+
+<LI> Invoke a method on the invocation handler to set a file name for
+the checkpoint file. Alternatively, you can add a parameter to the
+readObj and writeObj methods to include the file name.
+
+<LI> The invocation handler should have a method to open a file and a
+method to close the file.
+
+<LI> In the invocation handler do the following:
+<UL>
+
+<LI> If the method writeObj is called, serialize the object to the
+checkpointFile. 
+
+You may need separate methods, perhaps in another class named
+SerializeTypes that has a method for each of the types that need to be
+seerialized. So, the method String serializeInt(int value, int
+tagName), will be called if the field type of the argument is int, and
+fieldName and fieldValue of MyAllTypesFirst or MyAllTypesSecond will
+be passed. This method will then return a string such as "&lt; myInt
+xsi:type="xsd:int">314</myInt>", wherein "myInt" and "314" are the
+arguments to the method and the rest are hardcode.
+
+<LI> If the method readObj is caled, deserialize into an object, and
+return it. Similar to SerializeTypes, you can use a
+class named DeserializeTypes with methods to deserialize each of the
+types.
+
+
+ <UL>
+   <LI> Use reflection to create the object depending on the value in the complexType element.
+   <LI> Parse the names of the data members and then invoke the corresponding setX method to set the value for that data member.
+</UL>
+
+<LI> From the command line take <s>two</s> three arguments: (1) mode,
+(2) N and (3) <S>output</S> file name. The mode could be "serdeser" or
+"deser". The output file name we will use while testing <font
+color="RED"> for the "serdeser" mode</font> is "output.txt". In the
+"serdeser" mode, N referes to the NUM_OF_OBJECTS of MyAllTypesFirst
+and MyAllTypesSecond each. In the "deser" mode, N refers to the number
+of objects to be deserialized.</font>.
+
+
+<LI> Compare the objects that were serialized in writeObj to the
+objects that are returned from readObj. Correctly override <I>
+equals</I> and <I> hashCode</I>. For example, if you were using the
+vector data structure, you would compare if vector_old[i] is equal to
+vector_new[i]. Vector_old refers to the vector with the objects that
+were serialized. vector_new refers to the deserialized objects. Report
+how many objects did not match. If you run in "serdeser" mode then you
+should report "0 mismatched objects" <font color="RED">to
+stdout for cases where all the filds are serialized. </font>. If the TA changes the <S>serialized</S> <font
+color="RED"> input file to be used to test deserialziation,in between
+runs for the "deser" mode, </font> then you should deserialize the
+file and print each object that was read <font colore="RED">to
+stdout</RED>. So, make sure your toString(...) method prints the data
+member names and values in a easy to read format, to <S>output.txt</S>
+stdout.
+
+<UL> Apply the strategy pattern for Serialization and again for
+Deserialization. The Strategy in each of these two cases is to use the
+XMLSerialization and XMLDeserialization for the given input. Note that
+there is only one strategy each to be used in this assignment for Serialization and Deserialization.
+
+<UL>
+
+<LI> It is optional to have a separate method to serialize each type
+used in the MyAllTypes2.txt file. If you do so, place those methods in
+SerializeTypes.java and DeserializeTypes.java.
+
+<LI> You may have a separate method to deserialize each complex type
+used in the MyAllTypes2.txt file.
+
+</UL>
+
+
+<UL>
+
+</UL>
+
+</UL>
+
+
+<LI> Flow of Control
+
+<UL>
+<LI> create a Dynamic Proxy 
+<LI> create a vector of SerializableObject. Populate it with instances of MyAllTypesFirst and MyAllTypesSecond
+
+<LI> when you create instances of MyAllTypesFirst and MyAllTypesSecond
+(using randomly generated values), if the value of an int, double, or
+long is less than 10, then that field should NOT be serialized. As
+shown in MyAllTypes2.txt, some fields could be missing from the
+serialized output.
+
+<LI> call writeObj for each instance of the vector so that the checkPoint file is created via the proxy implementation.
+<LI> call readObj to read the checkpoint file objects and create a vector with the return instances.
+
+<LI> compare the serialized and deserialized vectors and report how
+many instances match. Note that the match may not be perfect if the
+TA, during testing of your submission, changes the values of some of
+the data members in the checkPoint file.
+
+</UL>
+
+</UL>
+
+<H2> Some General Design Considerations </H2>
+     
+<UL>
+<LI> Same as before
+</UL> 
+
+<H2>  Code Organization </H2>
+
+<UL>
+<LI> Your directory structure should be the following:
+
+<PRE>
+ -firstName_lastName_assign6
+ ---genericCheckpointing
+  ----README.txt
+  ----src
+        ----build.xml
+	---genericCheckpointing
+		 ------driver
+			 ---------Driver.java
+		 ------server
+			 ---------StoreRestoreI.java [tag interface]
+			 ---------StoreI.java 
+			 ---------RestoreI.java 
+		 ------util
+			 ---------MyAllTypesFirst.java 
+			 ---------MyAllTypesSecond.java 
+			 ---------ProxyCreator.java 
+			 ---------SerializableObject.java [empty base class]
+		 ------xmlStoreRestore
+			---------StoreRestoreHandler.java  (implements InvocationHandler)
+
+			 ------Any other Class/file you need
+
+</PRE>
+
+</UL>
+
+<H2>  Code Templates </H2>
+<UL> 
+<LI> <a href="./Driver.java">Driver.java</a>
+<LI> <a href="./ProxyCreator.java">ProxyCreator.java</a>
+<LI> <a href="./strategyNotes.txt">Notes on implementing the Strategy Pattern</a>
+<LI> <a href="./serRefCode.txt">Example code snippet for serialization</a>
+</UL>
+
+
+
+<H2>  Submission </H2>
+
+<UL>
+
+<LI> Same as Assignment-1. 
+
+</UL>
+
+<H2> Late Submissions </H2>
+
+<UL>
+
+<LI> The policy for late submissions is that you will lose 10% of the
+grade for each day that your submission is delayed.
+
+</UL>
+
+</UL>
+
+
+<P>
+<P>
+
+
+
+<H3> Grading Guidelines </H3>
+
+Here are the <a href="./assign6Grading.html">Grading Guidelines</a>.
+
+
+<P>
+
+
+
+<address>mgovinda at cs dot binghamton dot edu</address>
+Back to <a href="../../index.html"> CSx42: Programming Design Patterns</a>
+<!-- hhmts start -->
+<!-- hhmts end -->
+</body> </html>
+

@@ -56,10 +56,10 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface {
      */
     @Override
     public void writeToStdout() {
-        for (String line : lines) {
-            //System.out.println(line);
-            //MyLogger.writeMessage(line, MyLogger.DebugLevel.STDOUT);
-        }
+//        for (String line : lines) {
+//            System.out.println(line);
+//            MyLogger.writeMessage(line, MyLogger.DebugLevel.STDOUT);
+//        }
     }
     
     /**

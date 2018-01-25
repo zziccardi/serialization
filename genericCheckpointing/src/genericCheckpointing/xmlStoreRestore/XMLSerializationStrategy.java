@@ -77,7 +77,16 @@ public class XMLSerializationStrategy implements SerializationStrategyI {
                 }
             }
         }
-        catch (ExceptionInInitializerError | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | NullPointerException | SecurityException e) {
+        catch (
+            ExceptionInInitializerError |
+            IllegalAccessException      |
+            IllegalArgumentException    |
+            InvocationTargetException   |
+            NoSuchMethodException       |
+            NullPointerException        |
+            SecurityException
+            e
+        ) {
             System.err.println("Could not serialize object");
             e.printStackTrace();
             System.exit(-1);

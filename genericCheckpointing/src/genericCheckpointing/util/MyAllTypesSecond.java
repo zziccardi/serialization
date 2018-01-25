@@ -22,7 +22,14 @@ public class MyAllTypesSecond extends SerializableObject {
         this.myCharT        = (char) 32;
     }
     
-    public MyAllTypesSecond(double myDoubleT, double myOtherDoubleT, float myFloatT, short myShortT, short myOtherShortT, char myCharT) {
+    public MyAllTypesSecond(
+        double myDoubleT,
+        double myOtherDoubleT,
+        float  myFloatT,
+        short  myShortT,
+        short  myOtherShortT,
+        char   myCharT
+    ) {
         this.myDoubleT      = myDoubleT;
         this.myOtherDoubleT = myOtherDoubleT;
         this.myFloatT       = myFloatT;

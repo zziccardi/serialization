@@ -22,7 +22,14 @@ public class MyAllTypesFirst extends SerializableObject {
         this.myBool      = false;
     }
     
-    public MyAllTypesFirst(int myInt, int myOtherInt, long myLong, long myOtherLong, String myString, boolean myBool) {
+    public MyAllTypesFirst(
+        int     myInt,
+        int     myOtherInt,
+        long    myLong,
+        long    myOtherLong,
+        String  myString,
+        boolean myBool
+    ) {
         this.myInt       = myInt;
         this.myOtherInt  = myOtherInt;
         this.myLong      = myLong;

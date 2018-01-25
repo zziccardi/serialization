@@ -104,7 +104,17 @@ public class XMLDeserializationStrategy implements DeserializationStrategyI {
                 }
             }
         }
-        catch (ClassNotFoundException | IllegalAccessException | IndexOutOfBoundsException | InstantiationException | InvocationTargetException | LinkageError | NullPointerException | SecurityException e) {
+        catch (
+            ClassNotFoundException    |
+            IllegalAccessException    |
+            IndexOutOfBoundsException |
+            InstantiationException    |
+            InvocationTargetException |
+            LinkageError              |
+            NullPointerException      |
+            SecurityException
+            e
+        ) {
             System.err.println("Could not deserialize object");
             e.printStackTrace();
             System.exit(-1);
