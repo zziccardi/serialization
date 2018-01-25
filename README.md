@@ -9,13 +9,9 @@ To compile:
 
     ant -buildfile genericCheckpointing/src/build.xml all
 
--------------------------------------------------------------------------------
-
 To run:
 
     ant -buildfile genericCheckpointing/src/build.xml run -Darg0=serdeser -Darg1=5 -Darg2=file.txt
-
--------------------------------------------------------------------------------
 
 To clean:
 

@@ -16,22 +16,22 @@ import genericCheckpointing.xmlStoreRestore.StoreRestoreHandler;
 public class Driver {
     
     public static void main(String[] args) {
-	    if (args.length != 3) {
-	        System.err.println("Usage: <mode> <number of objects> <file name>");
-	        System.exit(-1);
-	    }
-	    
-	    String mode = args[0];
-	    
-	    if (!(mode.equals("serdeser") || mode.equals("deser"))) {
-	        System.err.println("Invalid mode (must be \"serdeser\" or \"deser\")");
-	        System.exit(-1);
-	    }
-	    
-	    // The number of objects of both MyAllTypesFirst and MyAllTypesSecond
-	    int numObjects = -1;
-	    
-	    try {
+        if (args.length != 3) {
+            System.err.println("Usage: <mode> <number of objects> <file name>");
+            System.exit(-1);
+        }
+
+        String mode = args[0];
+
+        if (!(mode.equals("serdeser") || mode.equals("deser"))) {
+            System.err.println("Invalid mode (must be \"serdeser\" or \"deser\")");
+            System.exit(-1);
+        }
+
+        // The number of objects of both MyAllTypesFirst and MyAllTypesSecond
+        int numObjects = -1;
+
+        try {
             numObjects = Integer.parseInt(args[1]);
         }
         catch (NumberFormatException e) {
@@ -42,15 +42,15 @@ public class Driver {
         finally {
             // Do nothing!
         }
-	    
-	    String fileName = args[2];
-	    
-	    StoreRestoreHandler handler = new StoreRestoreHandler(fileName);
-	
-	    ProxyCreator pc = new ProxyCreator();
-	    
-	    // Create a proxy
-	    StoreRestoreI proxy = (StoreRestoreI) pc.createProxy(
+
+        String fileName = args[2];
+
+        StoreRestoreHandler handler = new StoreRestoreHandler(fileName);
+
+        ProxyCreator pc = new ProxyCreator();
+
+        // Create a proxy
+        StoreRestoreI proxy = (StoreRestoreI) pc.createProxy(
             new Class[] {
                 StoreI.class,
                 RestoreI.class
